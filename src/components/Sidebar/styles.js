@@ -15,7 +15,6 @@ export const Container = styled.aside`
   }
 `;
 
-
 export const NewPlaylist = styled.button`
   background: transparent;
   border: 0;
@@ -33,7 +32,7 @@ export const NewPlaylist = styled.button`
   img {
     margin-right: 10px;
   }
-`
+`;
 
 export const Nav = styled.ul `
   list-style: none;
@@ -64,4 +63,4 @@ export const Nav = styled.ul `
       font-weight: 300;
     }
   }
-`
+`;
