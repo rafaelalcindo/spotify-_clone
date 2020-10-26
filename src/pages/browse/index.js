@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Playlist, Title, List, Container } from './styles';
 
 const Browse = () => (
@@ -6,7 +7,7 @@ const Browse = () => (
     <Title>Navegar</Title>
 
     <List>
-      <Playlist href="" >
+      <Playlist to="/playlists/1" >
         <img
           src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
           alt="Playlist"
@@ -15,7 +16,7 @@ const Browse = () => (
         <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
       </Playlist>
 
-      <Playlist href="" >
+      <Playlist to="/playlists/2" >
         <img
           src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
           alt="Playlist"
@@ -24,7 +25,7 @@ const Browse = () => (
         <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
       </Playlist>
 
-      <Playlist href="" >
+      <Playlist to="/playlists/3" >
         <img
           src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
           alt="Playlist"
@@ -33,7 +34,7 @@ const Browse = () => (
         <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
       </Playlist>
 
-      <Playlist href="" >
+      <Playlist to="/playlists/4" >
         <img
           src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
           alt="Playlist"
