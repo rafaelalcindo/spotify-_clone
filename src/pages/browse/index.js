@@ -1,50 +1,62 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Creators as PlaylistsActions } from '../../store/ducks/playlists'
+
+import Loading from '../../components/Loading'
 
 import { Playlist, Title, List, Container } from './styles';
 
-const Browse = () => (
-  <Container>
-    <Title>Navegar</Title>
+class Browse extends Component {
 
-    <List>
-      <Playlist to="/playlists/1" >
-        <img
-          src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
-      </Playlist>
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        thumbnail: PropTypes.string,
+        description: PropTypes.string
+      })),
+      loading: PropTypes.bool
+    }).isRequired,
+  }
 
-      <Playlist to="/playlists/2" >
-        <img
-          src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
-      </Playlist>
+  componentDidMount() {
+    this.props.getPlaylistsRequest()
+  }
 
-      <Playlist to="/playlists/3" >
-        <img
-          src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
-      </Playlist>
+  render() {
+    return (
+      <Container>
+        <Title>Navegar { this.props.playlists.loading && <Loading /> }</Title>
 
-      <Playlist to="/playlists/4" >
-        <img
-          src="https://www.sunsetweb.com.br/img/posts/postagens/20190129143724974/800/143724290120192577.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>relaxe enquanto você programa ouvindo apenas as melhores musicas</p>
-      </Playlist>
+        <List>
+          {
+            this.props.playlists.data.map(playlist => (
+              <Playlist key={playlist.id} to={`/playlists/${playlist.id}`} >
+                <img
+                  src={playlist.thumbnail}
+                  alt={playlist.title}
+                />
+                <strong>{playlist.title}</strong>
+                <p>{ playlist.description }</p>
+              </Playlist>
+            ))
+          }
 
-    </List>
-  </Container>
-)
+        </List>
+      </Container>
+    )
+  }
+}
 
-export default Browse;
+const mapStateToProps = state => ({
+  playlists: state.playlists
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators(PlaylistsActions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Browse);

@@ -1,25 +1,44 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Creators as PlaylistsActions } from '../../store/ducks/playlists'
+import playlists, { Creators as PlaylistsActions } from '../../store/ducks/playlists'
 
 import { Container, NewPlaylist, Nav } from './styles'
 
 import AddPlaylistIcon from '../../assets/images/add_playlist.svg'
 
+import Loading from '../../components/Loading'
+
 class Sidebar extends Component {
+
+  componentDidMount() {
+    this.props.getPlaylistsRequest();
+  }
+
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string
+      })),
+      loading: PropTypes.bool
+    }).isRequired
+  }
+
   render() {
     return(
       <Container>
         <div>
           <Nav main>
             <li>
-              <a href=""> Navegar </a>
+              <Link to="/"> Navegar </Link>
             </li>
             <li>
-              <a href=""> Rádio </a>
+              <Link to="/"> Rádio </Link>
             </li>
           </Nav>
 
@@ -69,10 +88,13 @@ class Sidebar extends Component {
           <Nav>
             <li>
               <span>PLAYLISTS</span>
+              {this.props.playlists.loading && <Loading />}
             </li>
-            <li>
-              <a href="" >Melhores do rock</a>
-            </li>
+            {this.props.playlists.data.map(playlist => (
+              <li key={playlist.id} >
+                <Link to={`/playlists/${playlist.id}`} >{ playlist.title }</Link>
+              </li>
+            ))}
           </Nav>
 
         </div>
@@ -86,4 +108,12 @@ class Sidebar extends Component {
 }
 
 
-export default Sidebar;
+
+
+const mapStateToProps = state => ({
+  playlists: state.playlists
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(PlaylistsActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
