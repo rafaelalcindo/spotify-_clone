@@ -1,7 +1,20 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+import { Spinner } from '../../components/Loading/styles'
 
 export const Container = styled.div`
   margin-top: 30px;
+
+  ${Spinner} {
+    height: 48px;
+  }
+
+  ${props => props.loading && css`
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `}
 `
 export const Header = styled.header`
   display: flex;
@@ -47,6 +60,30 @@ export const Header = styled.header`
       font-size: 12px;
       letter-spacing: 1.11px;
     }
+  }
+`
+
+export const SongItem = styled.tr`
+  td {
+    border-top: 1px solid #282828;
+    font-size: 13px;
+    padding: 0 10px;
+    line-height: 40px;
+    background: ${props => props.selected ? '#282828' : 'transparent'};
+    color: ${props => (props.playing ? '#1ED760' : '#FFF') }
+
+    &:first-child {
+      width: 80px;
+      text-align: right;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  &:hover td {
+    background: #282828;
   }
 `
 

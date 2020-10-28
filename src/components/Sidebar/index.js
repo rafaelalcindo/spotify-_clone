@@ -1,79 +1,119 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import playlists, { Creators as PlaylistsActions } from '../../store/ducks/playlists'
 
 import { Container, NewPlaylist, Nav } from './styles'
 
 import AddPlaylistIcon from '../../assets/images/add_playlist.svg'
 
-const Sidebar = () => (
-  <Container>
-    <div>
-      <Nav main>
-        <li>
-          <a href=""> Navegar </a>
-        </li>
-        <li>
-          <a href=""> Rádio </a>
-        </li>
-      </Nav>
+import Loading from '../../components/Loading'
 
-      <Nav>
-        <li>
-          <span>SUA BIBLIOTECA</span>
-        </li>
-        <li>
-          <a href=""> Seu Daily Mix </a>
-        </li>
-        <li>
-          <a href=""> Tocadas recentemente </a>
-        </li>
-        <li>
-          <a href=""> Música </a>
-        </li>
+class Sidebar extends Component {
 
-        <li>
-          <a href=""> Música </a>
-        </li>
-      </Nav>
+  componentDidMount() {
+    this.props.getPlaylistsRequest();
+  }
 
-      <Nav>
-        <li>
-          <a href=""> Álbums </a>
-        </li>
-        <li>
-          <a href=""> Artistas </a>
-        </li>
-        <li>
-          <a href=""> Estações </a>
-        </li>
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string
+      })),
+      loading: PropTypes.bool
+    }).isRequired
+  }
 
-        <li>
-          <a href=""> Arquivos locais </a>
-        </li>
+  render() {
+    return(
+      <Container>
+        <div>
+          <Nav main>
+            <li>
+              <Link to="/"> Navegar </Link>
+            </li>
+            <li>
+              <Link to="/"> Rádio </Link>
+            </li>
+          </Nav>
 
-        <li>
-          <a href=""> Vídeos </a>
-        </li>
+          <Nav>
+            <li>
+              <span>SUA BIBLIOTECA</span>
+            </li>
+            <li>
+              <a href=""> Seu Daily Mix </a>
+            </li>
+            <li>
+              <a href=""> Tocadas recentemente </a>
+            </li>
+            <li>
+              <a href=""> Música </a>
+            </li>
 
-        <li>
-          <a href=""> Podcasts </a>
-        </li>
-      </Nav>
+            <li>
+              <a href=""> Música </a>
+            </li>
+          </Nav>
 
-      <Nav>
-        <li>
-          <span>PLAYLISTS</span>
-        </li>
-        <li>
-          <a href="" >Melhores do rock</a>
-        </li>
-      </Nav>
+          <Nav>
+            <li>
+              <a href=""> Álbums </a>
+            </li>
+            <li>
+              <a href=""> Artistas </a>
+            </li>
+            <li>
+              <a href=""> Estações </a>
+            </li>
 
-    </div>
-    <NewPlaylist>
-      <img src={AddPlaylistIcon} alt="Adicionar playlist" />
-      Nova playlist
-    </NewPlaylist>
-  </Container>
-);
+            <li>
+              <a href=""> Arquivos locais </a>
+            </li>
 
-export default Sidebar;
+            <li>
+              <a href=""> Vídeos </a>
+            </li>
+
+            <li>
+              <a href=""> Podcasts </a>
+            </li>
+          </Nav>
+
+          <Nav>
+            <li>
+              <span>PLAYLISTS</span>
+              {this.props.playlists.loading && <Loading />}
+            </li>
+            {this.props.playlists.data.map(playlist => (
+              <li key={playlist.id} >
+                <Link to={`/playlists/${playlist.id}`} >{ playlist.title }</Link>
+              </li>
+            ))}
+          </Nav>
+
+        </div>
+        <NewPlaylist>
+          <img src={AddPlaylistIcon} alt="Adicionar playlist" />
+          Nova playlist
+        </NewPlaylist>
+      </Container>
+    );
+  };
+}
+
+
+
+
+const mapStateToProps = state => ({
+  playlists: state.playlists
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(PlaylistsActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
