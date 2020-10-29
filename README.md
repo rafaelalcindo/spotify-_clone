@@ -17,3 +17,11 @@ em seguida rode o comando
 ```js
 yarn start
 ```
+
+## Usando o JSON SERVER
+
+estamos usando o JSON SERVER como um simulador de um servidor, para que a aplicação rode perfeitinho rode o comando
+
+```js
+json-server server.json -p 3001 -w -d 500
+```
