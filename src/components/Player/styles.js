@@ -59,6 +59,7 @@ export const Volume = styled.div`
   align-items: center;
   /* width: 100%; */
   margin-top: 20px;
+  width: 5%;
 
   img {
     margin-top: 5px;
